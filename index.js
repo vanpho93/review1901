@@ -28,6 +28,12 @@ app.post('/add', parser, (req, res) => {
 });
 
 app.get('/add', (req, res) => res.render('add'));
+app.get('/update/:id', (req, res) => {
+    const { id } = req.params;
+    const singer = singers.find(s => s.id === +id);
+    if (!singer) return res.send('Khong tim thay ca si.');
+    res.render('update', { singer });
+});
 
 app.listen(3000, () => console.log('Server started!'));
 reload(app);
