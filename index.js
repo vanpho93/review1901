@@ -14,20 +14,27 @@ app.get('/', (req, res) => {
 
 app.get('/remove/:id', (req, res) => {
     const { id } = req.params;
-    const index = singers.findIndex(singer => singer.id === +id);
-    if (index === -1) return res.send('Khong tim thay ca si.');
-    singers.splice(index, 1);
+    const removed = Singer.remove(id);
+    if (!removed) return res.send('Khong tim thay ca si.');
     res.redirect('/');
 });
 
 app.post('/add', parser, (req, res) => {
     const { name, link, image } = req.body;
-    const singer = new Singer(name, link, image);
-    singers.push(singer);
+    Singer.add(name, link, image);
+    res.redirect('/');
+});
+
+app.post('/update/:id', parser, (req, res) => {
+    const { name, link, image } = req.body;
+    const { id } = req.params;
+    const updated = Singer.update(id, name, link, image);
+    if (!updated) return res.send('Khong tim thay ca si.');
     res.redirect('/');
 });
 
 app.get('/add', (req, res) => res.render('add'));
+
 app.get('/update/:id', (req, res) => {
     const { id } = req.params;
     const singer = singers.find(s => s.id === +id);

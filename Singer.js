@@ -5,6 +5,26 @@ class Singer {
         this.link = link;
         this.image = image;
     }
+    static add(name, link, image) {
+        const singer = new Singer(name, link, image);
+        singers.push(singer);
+    }
+
+    static remove(id) {
+        const index = singers.findIndex(singer => singer.id === +id);
+        if (index === -1) return false;
+        singers.splice(index, 1);
+        return true;
+    }
+
+    static update(id, name, link, image) {
+        const singer = singers.find(s => s.id === +id);
+        if (!singer) return false;
+        singer.name = name;
+        singer.link = link;
+        singer.image = image;
+        return true;
+    }
 }
 
 const singers = [
